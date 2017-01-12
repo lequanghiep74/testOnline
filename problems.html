@@ -1087,6 +1087,65 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12 view" style="display: none;">
+                        <div class="widget-box">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Details problem</h4>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main no-padding">
+                                    <form class="form-horizontal m-t-10" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Code</label>
+                                            <label class="col-sm-4 control-label" style="text-align: left;">Code</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Status</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" disabled id="status">
+                                                    <option value="notset">Not set</option>
+                                                    <option value="true">True</option>
+                                                    <option value="false">False</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Language</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" disabled id="language">
+                                                    <option value="c++">C++</option>
+                                                    <option value="java">Java</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">File Path</label>
+                                            <div class="col-sm-4">
+                                                <input type="file" id="id-input-file-2"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-3">
+                                                <button class="btn btn-sm btn-info" type="button">
+                                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                                    Submit
+                                                </button>
+                                                <button class="btn btn-sm m-l-5" id="cancel-view">
+                                                    <i class="ace-icon fa fa-close bigger-110"></i>
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <object data='https://laptrinh.online/Content/uploads/636132880275919282_admin_MAXMIN_2_1_MAXMIN.pdf' type='application/pdf' width='100%' height='600px'></object>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div><!-- /.page-content -->
         </div>
@@ -1238,12 +1297,25 @@
 <script type="text/javascript">
     jQuery(function ($) {
         $('#id-input-file-1').ace_file_input({
-            no_file:'No File ...',
-            btn_choose:'Choose',
-            btn_change:'Change',
-            droppable:false,
-            onchange:null,
-            thumbnail:false //| true | large
+            no_file: 'No File ...',
+            btn_choose: 'Choose',
+            btn_change: 'Change',
+            droppable: false,
+            onchange: null,
+            thumbnail: false //| true | large
+            //whitelist:'gif|png|jpg|jpeg'
+            //blacklist:'exe|php'
+            //onchange:''
+            //
+        });
+
+        $('#id-input-file-2').ace_file_input({
+            no_file: 'No File ...',
+            btn_choose: 'Choose',
+            btn_change: 'Change',
+            droppable: false,
+            onchange: null,
+            thumbnail: false //| true | large
             //whitelist:'gif|png|jpg|jpeg'
             //blacklist:'exe|php'
             //onchange:''
@@ -1283,6 +1355,12 @@
         $('#cancel').on('click', function () {
             $('.list').toggle();
             $('.form').toggle();
+            $('#plus-btn').toggle();
+        });
+
+        $('#cancel-view').on('click', function () {
+            $('.list').toggle();
+            $('.view').toggle();
             $('#plus-btn').toggle();
         });
 
@@ -1330,6 +1408,12 @@
             $('#dynamic-table-' + i).on('click', '#edit-button', function () {
                 $('.list').toggle();
                 $('.form').toggle();
+                $('#plus-btn').toggle();
+            });
+
+            $('#dynamic-table-' + i).on('click', '#view-button', function () {
+                $('.list').toggle();
+                $('.view').toggle();
                 $('#plus-btn').toggle();
             });
 
@@ -1512,42 +1596,44 @@
          ).css('padding-top', '12px');
          */
 
-        function showErrorAlert (reason, detail) {
-            var msg='';
-            if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+        function showErrorAlert(reason, detail) {
+            var msg = '';
+            if (reason === 'unsupported-file-type') {
+                msg = "Unsupported format " + detail;
+            }
             else {
                 //console.log("error uploading file", reason, detail);
             }
-            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+
-                '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
         }
 
-        var enableImageResize = function() {
+        var enableImageResize = function () {
             $('.wysiwyg-editor')
-                .on('mousedown', function(e) {
+                .on('mousedown', function (e) {
                     var target = $(e.target);
-                    if( e.target instanceof HTMLImageElement ) {
-                        if( !target.data('resizable') ) {
+                    if (e.target instanceof HTMLImageElement) {
+                        if (!target.data('resizable')) {
                             target.resizable({
                                 aspectRatio: e.target.width / e.target.height,
                             });
                             target.data('resizable', true);
 
-                            if( lastResizableImg != null ) {
+                            if (lastResizableImg != null) {
                                 //disable previous resizable image
-                                lastResizableImg.resizable( "destroy" );
+                                lastResizableImg.resizable("destroy");
                                 lastResizableImg.removeData('resizable');
                             }
                             lastResizableImg = target;
                         }
                     }
                 })
-                .on('click', function(e) {
-                    if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
+                .on('click', function (e) {
+                    if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
                         destroyResizable();
                     }
                 })
-                .on('keydown', function() {
+                .on('keydown', function () {
                     destroyResizable();
                 });
         }
@@ -1555,51 +1641,50 @@
         enableImageResize();
 
         $('#editor1').ace_wysiwyg({
-            toolbar:
-                [
-                    'font',
-                    null,
-                    'fontSize',
-                    null,
-                    {name:'bold', className:'btn-info'},
-                    {name:'italic', className:'btn-info'},
-                    {name:'strikethrough', className:'btn-info'},
-                    {name:'underline', className:'btn-info'},
-                    null,
-                    {name:'insertunorderedlist', className:'btn-success'},
-                    {name:'insertorderedlist', className:'btn-success'},
-                    {name:'outdent', className:'btn-purple'},
-                    {name:'indent', className:'btn-purple'},
-                    null,
-                    {name:'justifyleft', className:'btn-primary'},
-                    {name:'justifycenter', className:'btn-primary'},
-                    {name:'justifyright', className:'btn-primary'},
-                    {name:'justifyfull', className:'btn-inverse'},
-                    null,
-                    {name:'createLink', className:'btn-pink'},
-                    {name:'unlink', className:'btn-pink'},
-                    null,
-                    {name:'insertImage', className:'btn-success'},
-                    null,
-                    'foreColor',
-                    null,
-                    {name:'undo', className:'btn-grey'},
-                    {name:'redo', className:'btn-grey'}
-                ],
+            toolbar: [
+                'font',
+                null,
+                'fontSize',
+                null,
+                {name: 'bold', className: 'btn-info'},
+                {name: 'italic', className: 'btn-info'},
+                {name: 'strikethrough', className: 'btn-info'},
+                {name: 'underline', className: 'btn-info'},
+                null,
+                {name: 'insertunorderedlist', className: 'btn-success'},
+                {name: 'insertorderedlist', className: 'btn-success'},
+                {name: 'outdent', className: 'btn-purple'},
+                {name: 'indent', className: 'btn-purple'},
+                null,
+                {name: 'justifyleft', className: 'btn-primary'},
+                {name: 'justifycenter', className: 'btn-primary'},
+                {name: 'justifyright', className: 'btn-primary'},
+                {name: 'justifyfull', className: 'btn-inverse'},
+                null,
+                {name: 'createLink', className: 'btn-pink'},
+                {name: 'unlink', className: 'btn-pink'},
+                null,
+                {name: 'insertImage', className: 'btn-success'},
+                null,
+                'foreColor',
+                null,
+                {name: 'undo', className: 'btn-grey'},
+                {name: 'redo', className: 'btn-grey'}
+            ],
             'wysiwyg': {
                 fileUploadError: showErrorAlert
             }
         }).prev().addClass('wysiwyg-style2');
 
-        $('[data-toggle="buttons"] .btn').on('click', function(e){
+        $('[data-toggle="buttons"] .btn').on('click', function (e) {
             var target = $(this).find('input[type=radio]');
             var which = parseInt(target.val());
             var toolbar = $('#editor1').prev().get(0);
-            if(which >= 1 && which <= 4) {
-                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g , '');
-                if(which == 1) $(toolbar).addClass('wysiwyg-style1');
-                else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
-                if(which == 4) {
+            if (which >= 1 && which <= 4) {
+                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g, '');
+                if (which == 1) $(toolbar).addClass('wysiwyg-style1');
+                else if (which == 2) $(toolbar).addClass('wysiwyg-style2');
+                if (which == 4) {
                     $(toolbar).find('.btn-group > .btn').addClass('btn-white btn-round');
                 } else $(toolbar).find('.btn-group > .btn-white').removeClass('btn-white btn-round');
             }
