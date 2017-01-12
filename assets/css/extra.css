@@ -21,3 +21,8 @@
 .m-t-10 {
     margin-top: 10px;
 }
+
+.form-group > .input-group {
+    padding-left: 12px !important;
+    padding-right: 11px !important;
+}
