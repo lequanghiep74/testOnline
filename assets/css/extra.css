@@ -37,6 +37,7 @@
     right: 30px;
     cursor: pointer;
     box-shadow: 0px 2px 5px #666;
+    z-index: 998;
 }
 
 .plus{
@@ -56,4 +57,8 @@
     font-weight: 300;
     animation: plus-out 0.3s;
     transition: all 0.3s;
+}
+
+.wysiwyg-editor {
+    border: 1px #E5E5E5 solid !important;
 }
