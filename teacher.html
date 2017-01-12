@@ -17,6 +17,9 @@
     <!-- text fonts -->
     <link rel="stylesheet" href="assets/css/fonts.googleapis.com.css"/>
 
+    <!-- extra -->
+    <link rel="stylesheet" href="assets/css/extra.css"/>
+
     <!-- ace styles -->
     <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
 
@@ -673,12 +676,12 @@
                 </div><!-- /.page-header -->
 
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 list">
                         <div class="clearfix">
                             <div class="pull-right tableTools-container"></div>
                         </div>
                         <div class="table-header">
-                            List Student
+                            List Teacher
                         </div>
 
                         <!-- div.table-responsive -->
@@ -713,11 +716,11 @@
                                     <td>
                                         <div class="hidden-sm hidden-xs action-buttons">
 
-                                            <a class="green" href="#">
+                                            <a class="green" id="edit-button">
                                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                             </a>
 
-                                            <a class="red" href="#">
+                                            <a class="red" id="delete-button">
                                                 <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                             </a>
                                         </div>
@@ -754,6 +757,94 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 form" style="display: none">
+                        <div class="widget-box">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Create student</h4>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main no-padding">
+                                    <form class="form-horizontal m-t-10" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Username</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" placeholder="Username">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Password</label>
+                                            <div class="col-sm-4">
+                                                <input type="password" class="form-control" placeholder="Password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Confirm
+                                                password</label>
+                                            <div class="col-sm-4">
+                                                <input type="password" class="form-control"
+                                                       placeholder="Confirm password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Fullname</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" placeholder="Fullname">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Email</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" placeholder="Email">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Phone number</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" placeholder="Phone number">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Birthday</label>
+                                            <div class="col-sm-4">
+                                                <input placeholder="__/__/____" class="form-control input-mask-date"
+                                                       type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Gender</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" id="gender">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Role</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" id="role">
+                                                    <option value="admin">Admin</option>
+                                                    <option value="teacher">Teacher</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-3">
+                                                <button class="btn btn-sm btn-info" type="button">
+                                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                                    Save
+                                                </button>
+                                                <button class="btn btn-sm m-l-5" id="cancel">
+                                                    <i class="ace-icon fa fa-close bigger-110"></i>
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -834,6 +925,8 @@
 <script src="assets/js/ace-elements.min.js"></script>
 <script src="assets/js/ace.min.js"></script>
 
+<script src="assets/js/jquery.maskedinput.min.js"></script>
+
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {
@@ -903,6 +996,14 @@
 </script>
 <script type="text/javascript">
     jQuery(function ($) {
+        $.mask.definitions['~'] = '[+-]';
+        $('.input-mask-date').mask('99/99/9999');
+
+        $('#cancel').on('click', function () {
+            $('.list').toggle();
+            $('.form').toggle();
+        });
+
         //initiate dataTables plugin
         var myTable =
             $('#dynamic-table')
@@ -937,6 +1038,11 @@
                         style: 'multi'
                     }
                 });
+
+        $('#dynamic-table').on('click', '#edit-button', function () {
+            $('.list').toggle();
+            $('.form').toggle();
+        });
 
 
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
