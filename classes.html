@@ -376,6 +376,9 @@
 </div>
 
 <div class="main-container ace-save-state" id="main-container">
+    <div class="floating-button" id="plus-btn">
+        <p class="plus">+</p>
+    </div>
     <script type="text/javascript">
         try {
             ace.settings.loadState('main-container')
@@ -1091,6 +1094,13 @@
         $('#cancel').on('click', function () {
             $('.list').toggle();
             $('.form').toggle();
+            $('#plus-btn').toggle();
+        });
+
+        $('#plus-btn').on('click', function () {
+            $('.list').toggle();
+            $('.form').toggle();
+            $('#plus-btn').toggle();
         });
 
         //initiate dataTables plugin
@@ -1131,6 +1141,7 @@
         $('#dynamic-table').on('click', '#edit-button', function () {
             $('.list').toggle();
             $('.form').toggle();
+            $('#plus-btn').toggle();
         });
 
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
