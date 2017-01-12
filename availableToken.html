@@ -732,7 +732,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-xs-12 form">
+                    <div class="col-xs-12 form" style="display: none">
                         <div class="widget-box">
                             <div class="widget-header">
                                 <h4 class="widget-title">Create token key</h4>
@@ -752,7 +752,7 @@
                                                     <i class="ace-icon fa fa-check bigger-110"></i>
                                                     Save
                                                 </button>
-                                                <button class="btn btn-sm m-l-5" type="reset">
+                                                <button class="btn btn-sm m-l-5" id="cancel">
                                                     <i class="ace-icon fa fa-close bigger-110"></i>
                                                     Cancel
                                                 </button>
@@ -910,6 +910,11 @@
 </script>
 <script type="text/javascript">
     jQuery(function ($) {
+        $('#cancel').on('click', function () {
+            $('.list').toggle();
+            $('.form').toggle();
+        });
+
         //initiate dataTables plugin
         var myTable =
             $('#dynamic-table')
@@ -944,7 +949,6 @@
                         style: 'multi'
                     }
                 });
-
 
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
 
